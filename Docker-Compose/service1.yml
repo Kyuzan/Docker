@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  mariadb:
+    container_name: service-mariadb
+    image: mariadb:latest
+    ports:
+      - 9095:3306
+    environment:
+      - MARIADB_ROOT_PASSWORD=123qwe
+    networks:
+      - service-data
+  phpmyadmin: 
+    container_name: service-phpmyadmin
+    image: phpmyadmin:latest
+    ports: 
+      - 8811:80
+    depends_on:
+      - mariadb
+    environment:
+      - PMA_HOST=mariadb
+    networks:
+      - service-data
+      
+networks:
+  service-data:
+    name: service-data
