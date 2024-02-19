@@ -43,7 +43,7 @@ services:
     restart: always
     volumes:
       - data-apps2:/var/www/html
-      - /data/srv/nextcloud:/var/www/html/data
+      - /data/srv/apps/nextcloud:/var/www/html/data
     networks:
       net_app2:
         ipv4_address: 172.20.0.3 
