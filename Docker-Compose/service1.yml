@@ -13,6 +13,7 @@ services:
       - data-db:/var/lib/mysql
     networks:
       - net_db:
+          ipv4_address: 172.19.0.2 
       - net_app2: 
           ipv4_address: 172.20.0.2
     restart: always
@@ -27,7 +28,8 @@ services:
     environment:
       - PMA_HOST=database
     networks:
-      - net_db
+      net_db:
+        ipv4_address: 172.19.0.3 
     restart: always
 
   app_2: #nextcloud
@@ -54,7 +56,8 @@ networks:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.20.0.0/16
+        - subnet: 172.19.0.0/16
+          gateway: 172.19.0.1
     
   net_app2:
     name: net_app2
