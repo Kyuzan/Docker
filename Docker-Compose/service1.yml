@@ -10,7 +10,7 @@ services:
     environment:
       - MARIADB_ROOT_PASSWORD=123qwe
     volumes:
-      - data-db:/var/lib/mysql
+      - /data/database:/var/lib/mysql
     networks:
       net_db:
         ipv4_address: 172.19.0.2 
@@ -37,13 +37,13 @@ services:
         ipv4_address: 172.20.0.3 
       
 networks:
-  net_db:
-    name: net_db
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.19.0.0/16
-          gateway: 172.19.0.1
+  #net_db:
+  #  name: net_db
+  #  driver: bridge
+  #  ipam:
+  #    config:
+  #      - subnet: 172.19.0.0/16
+  #        gateway: 172.19.0.1
     
   net_app2:
     name: net_app2
@@ -53,6 +53,6 @@ networks:
         - subnet: 172.20.0.0/16
           gateway: 172.20.0.1
 
-volumes:
-  data-db:
+#volumes:
+#  data-db:
 #  data-apps2:

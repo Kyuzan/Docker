@@ -1,0 +1,38 @@
+version: "3.8"
+services:
+
+  database:
+    container_name: app_1
+    image: mariadb:latest
+    environment:
+      - MARIADB_ROOT_PASSWORD=123qwe
+    networks:
+      local:
+        ipv4_address: 172.18.0.2
+    ports:
+      - 5432:3306
+    restart: always
+
+  application:
+    container_name: app_2
+    image: nextcloud:latest
+    networks:
+      local:
+        ipv4_address: 172.18.0.3
+    ports: 
+      - 9911:80
+    volumes:
+      - data-db:/var/www/html
+      - /data/srv/apps/nextcloud/data:/var/www/html/data
+    restart: always
+
+networks:
+ local:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.18.0.0/16"
+
+volumes:
+  data-db:
