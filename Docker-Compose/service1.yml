@@ -1,27 +1,57 @@
 version: "3.8"
 
 services:
+
   db: #mariadb
-    container_name: service-mariadb
+    container_name: database
     image: mariadb:latest
     ports:
-      - 9095:3306
+      - 9910:3306
     environment:
       - MARIADB_ROOT_PASSWORD=123qwe
+    volumes:
+      - data-db:/var/lib/mysql
     networks:
-      - service-data
-  app1: #phpmyadmin 
-    container_name: service-phpmyadmin
+      - net_db
+      - net_app2
+    restart: always
+
+  app_1: #phpmyadmin
+    container_name: app_pma
     image: phpmyadmin:latest
     ports: 
-      - 8811:80
+      - 9911:80
     depends_on:
-      - mariadb
+      - db
     environment:
-      - PMA_HOST=mariadb
+      - PMA_HOST=database
     networks:
-      - service-data
+      - net_db
+    restart: always
+
+  app_2: #nextcloud
+    container_name: app_nextcloud
+    image: nextcloud:latest
+    ports:
+      - 9912:80
+    depends_on:
+      - db
+     #environment:
+      #- MARIADB_ROOT_PASSWORD=123qwe
+      #- MARIADB_DATABASE=nextcloud
+    restart: always
+    volumes:
+      - data-apps2:/var/www/html
+      - /data/srv/nextcloud:/var/www/html/data
+    networks:
+      - net_app2
       
 networks:
-  service-data:
-    name: service-data
+  net_db:
+    name: net_db
+  net_app2:
+    name: net_app2
+
+volumes:
+  data-db:
+  data-apps2:
